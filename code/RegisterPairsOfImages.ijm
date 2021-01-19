@@ -61,6 +61,7 @@ function InputDirectory() {
 
 	// The macro check that you choose a directory and output the input path
 	if (lengthOf(dirIn) == 0) {
+		
 		print("Exit!");
 		exit();
 			
@@ -88,7 +89,7 @@ function OutputDirectory(outputPath, year, month, dayOfMonth, second) {
 	
 	// Split the string by file separtor
 	splitString = split(dirOutRoot, File.separator); 
-	for(i=0; i<splitString.length; i++) {
+	for (i=0; i<splitString.length; i++) {
 
 		lastString = splitString[i];
 		
@@ -182,6 +183,7 @@ function MaxMemory() {
 	memory = IJ.maxMemory();
 
 	if (memory > 4000000000) {
+		
 		print("Max Memory (RAM) Avaible for Fiji/ImageJ is:", memory); 
 		print("Please change the amount of memory avaible to Fiji/ImageJ to 70% of your total memory");
 		print("Edit >> Options >> Memory % Threads...");
@@ -263,7 +265,8 @@ macro RegisterPairsOfImages {
 	// 5. Create the output root directory in the input path
 	dirOutRoot = OutputDirectory(outputPath, year, month, dayOfMonth, second);
 
-	if (!File.exists(dirOutRoot)) {	
+	if (!File.exists(dirOutRoot)) {
+			
 		File.makeDirectory(dirOutRoot);
 		text = "Output path:\t" + dirOutRoot;
 		print(text);
@@ -304,30 +307,30 @@ macro RegisterPairsOfImages {
 				print("Opening:\t" + inputTitle);
 
 				// Remove file extension .tif / tiff
-            	dotIndex = lastIndexOf(inputTitle, ".");
-            	title = substring(inputTitle, 0, dotIndex);
+				dotIndex = lastIndexOf(inputTitle, ".");
+				title = substring(inputTitle, 0, dotIndex);
 
-            	// User can open the atlas stack and look for the right section
-            	setBatchMode("show");
-            	imageShape = ScreenLocation();
+				// User can open the atlas stack and look for the right section
+				setBatchMode("show");
+				imageShape = ScreenLocation();
 				setLocation(0,0,imageShape[2],imageShape[3]);
-            	open(path2Fiji + "Coronal_AtlasSeq.tif");
-            	setBatchMode("show");
+				open(path2Fiji + "Coronal_AtlasSeq.tif");
+				setBatchMode("show");
 				setLocation(imageShape[2],0,imageShape[2],imageShape[3]);
-            	atlastStack = getTitle();
-            	waitForUser("Choose the right section from the atlas!");
-            	setBatchMode("hide");
-            	selectedSlice = getSliceNumber();
-            	run("Make Substack...", "delete slices=[" + selectedSlice + "]");
-            	rename("Atlas_Section_" + (selectedSlice + 1));
-            	atlasImage = getTitle();
-            	setBatchMode("show");
+				atlastStack = getTitle();
+				waitForUser("Choose the right section from the atlas!");
+				setBatchMode("hide");
+				selectedSlice = getSliceNumber();
+				run("Make Substack...", "delete slices=[" + selectedSlice + "]");
+				rename("Atlas_Section_" + (selectedSlice + 1));
+				atlasImage = getTitle();
+				setBatchMode("show");
 				setLocation(imageShape[2],0,imageShape[2],imageShape[3]);
-            	run("Interactive Similarity");
+				run("Interactive Similarity");
 				waitForUser("Please apply a pre-trasformation on the atlas\nTo apply the trasformation press Enter!");
 				setBatchMode("hide");
-            	selectImage(atlastStack);
-            	close(atlastStack);
+				selectImage(atlastStack);
+				close(atlastStack);
             	
 				// Pre-steps
 				selectImage(inputTitle);
@@ -358,17 +361,17 @@ macro RegisterPairsOfImages {
 				selectImage(regSourceImg);
 				close(regSourceImg);
 				selectImage(atlasImage);
-            	close(atlasImage);
-            	selectImage(rawImage);
-            	close(rawImage);
+				close(atlasImage);
+				selectImage(rawImage);
+				close(rawImage);
 
-            	// Fuse the registered images
-            	selectImage(regAtlasImg);
-            	setAutoThreshold("RenyiEntropy dark stack");
-            	run("Convert to Mask");
-            	run("16-bit");
-            	selectImage(inputTitle);
-            	run("Split Channels");
+				// Fuse the registered images
+				selectImage(regAtlasImg);
+				setAutoThreshold("RenyiEntropy dark stack");
+				run("Convert to Mask");
+				run("16-bit");
+				selectImage(inputTitle);
+				run("Split Channels");
 
 				if (channels == 3) {
 
