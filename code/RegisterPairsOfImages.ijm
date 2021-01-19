@@ -1,17 +1,14 @@
 /*
- * Project: Template for Macro
+ * Project: Register 2D images with the brain atlas
  * 
  * Developed by Dr. Carlo A. Beretta 
  * Department for Anatomy and Cell Biology @ Heidelberg University
  * Email: carlo.beretta@uni-heidelberg.de
+ * Email: carlo.berri82@googlemail.com
  * Tel.: +49 (0) 6221 54 8682
- * Tel.: +49 (0) 6221 54 51435
- * 
- * Description: In this project I included what I think is frequently usefull
- * for deveopping a macro. Any suggestion is very much usefull!
  * 
  * Created: 2020-10-29
- * Last update: 2020-11-03
+ * Last update: 2021-01-19
  */
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -240,11 +237,7 @@ function ScreenLocation() {
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%% Macro %%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// Register 2D brain slices with atlas map
 macro RegisterPairsOfImages {
-
-    // TBD: Problem with the input instead of having 3 channels has 3 slices!
-    channels = 3;
 
 	// Start functions
 	// 1.
@@ -307,7 +300,7 @@ macro RegisterPairsOfImages {
 				// Open the input raw image
 				open(dirIn + folderList[i] + fileList[k]);
 				inputTitle = getTitle();
-				//getDimensions(width, height, channels, slices, frames);
+				getDimensions(width, height, channels, slices, frames);
 				print("Opening:\t" + inputTitle);
 
 				// Remove file extension .tif / tiff
@@ -386,10 +379,16 @@ macro RegisterPairsOfImages {
 
 					run("Merge Channels...", "c2=[C2-" + inputTitle + "] c3=[C3-" + inputTitle + "] c4=[" + regAtlasImg + "] create");
 					mergeTitle = getTitle();
+				
+				} else {
+
+					CloseAllWindows();
+					exit("Image dimentions not supported!\nOnly 2 and 3 channels images are supported.");
+					
 				}
 
 				// Save overlay as downsample image
-				run("Scale...", "x=0.25 y=0.25 z=1.0 depth=4 interpolation=Bilinear average create");
+				run("Scale...", "x=0.25 y=0.25 z=1.0 depth="[+channels+]" interpolation=Bilinear average create");
 				saveAs("Tiff", dirOut + title + "Atlas_Figure_DS_" + (selectedSlice +1));
 				mergeTitleDS = getTitle();
 				close(mergeTitleDS);
