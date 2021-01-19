@@ -21,8 +21,11 @@ Only supports 2 channels and 3 channels tiff raw images
 
 **Important:** at the first run the BrainAtlas folder will be copied in your ImageJ/Fiji installation directory and delete it from the Download directory.
 
-	6. Choose an Input directory that contains subdirectories with tiff raw images to register. The macro will guide the user through the registration steps.
- 	7. The results are saved in a new folder created in the input path
+6. Choose an Input directory that contains subdirectories with tiff raw images to register
+
+   (The macro will guide the user through the registration steps)
+
+7. The registered images are saved in a new folder created in the input path
 
 
 
