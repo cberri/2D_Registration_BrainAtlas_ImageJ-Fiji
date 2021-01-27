@@ -380,7 +380,7 @@ macro RegisterPairsOfImages {
 					
 				} else if (channels == 2) {
 
-					run("Merge Channels...", "c2=[C2-" + inputTitle + "] c3=[C3-" + inputTitle + "] c4=[" + regAtlasImg + "] create");
+					run("Merge Channels...", "c1=[C2-" + inputTitle + "] c2=[C2-" + inputTitle + "] c4=[" + regAtlasImg + "] create");
 					mergeTitle = getTitle();
 				
 				} else {
