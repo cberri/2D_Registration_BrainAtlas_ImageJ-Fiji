@@ -367,9 +367,17 @@ macro RegisterPairsOfImages {
 
 				// Fuse the registered images
 				selectImage(regAtlasImg);
-				setAutoThreshold("RenyiEntropy dark stack");
-				run("Convert to Mask");
+				setAutoThreshold("Percentile dark");
+				setOption("BlackBackground", true);
+				run("Convert to Mask", "method=Percentile background=Light calculate black");
+				run("Analyze Particles...", "  show=Masks stack");
+				run("Invert LUT");
 				run("16-bit");
+				regAtlasImgEnhanced = getTitle();
+				selectImage(regAtlasImg);
+				close(regAtlasImg);
+				selectImage(regAtlasImgEnhanced);
+				regAtlasImg = getTitle();
 				selectImage(inputTitle);
 				run("Split Channels");
 
