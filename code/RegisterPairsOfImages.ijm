@@ -399,7 +399,8 @@ macro RegisterPairsOfImages {
 				}
 
 				// Save overlay as downsample image
-				run("Scale...", "x=0.25 y=0.25 z=1.0 depth="[+channels+]" interpolation=Bilinear average create");
+				channels += 1;
+				run("Scale...", "x=0.25 y=0.25 z=1.0 depth=["+channels+"] interpolation=Bilinear average create");
 				saveAs("Tiff", dirOut + title + "Atlas_Figure_DS_" + (selectedSlice +1));
 				mergeTitleDS = getTitle();
 				close(mergeTitleDS);
